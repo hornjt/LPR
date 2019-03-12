@@ -30,7 +30,7 @@ import numpy
 ## per given misread
 def countPlateCombinations(plateString):
     misreadOptions = []  # tracking how mancomboPoss spaces between each bracket pair
-    plateList = list(plateString)  # converts the plate to list tcomboPosspe
+    plateList = list(plateString)  # converts the plate to list type
     counter = 0 # count between current brackets
     insideBracket = False # track whether inside bracket
     for letter in plateList:
@@ -95,50 +95,63 @@ def misRead(chars, length):
             newArrayComboPoss.append(chars[j])
     return numIterations
 '''
+    
 
-def getLetterOptions(plate, position):
-    letterArray = []
-    while plate[position] != ']':
-        letterArray.append(plate[position])
-    print(letterArray)
-    return letterArray
+##def getLetterOptions(plate, position):
+##    letterArray = []
+##    while plate[position] != ']':
+##        letterArray.append(plate[position])
+##        position += 1
+##    return letterArray
 
 def readOnePlate(plateString, combinations):
     lengthOfPlate = plateLength(plateString)
     possiblePlates = numpy.empty((combinations, lengthOfPlate), dtype='str')
-    print(possiblePlates)
+    #print(possiblePlates)
     misRead = False
-    position = 0
+    #position = 0
+    #getLetterOptions(plateString, position)
     
-    plateToList = list(plateString)  # converts the plate string to list type
+    #plateToList = list(plateString)  # converts the plate string to list type
 
+    ##### CURRENT PLATE
+    ##### "NAC[1hJ]BE[0O]LL"
+    
     for plateLetter in range(lengthOfPlate):
-        for comboPoss in range(combinations):
+        for y in range(combinations):
+            #toggles whether clean read or not
             if plateString[plateLetter] == '[' or plateString[plateLetter] == ']':
                 misRead = not misRead
+                continue   #moves position past the brackets
                 
-            if not misRead:
-                possiblePlates[comboPoss][plateLetter] = plateString[plateLetter]
+            if misRead == False:
+                possiblePlates[y][plateLetter] = plateString[plateLetter]
+            else:
+                #misReadOptions = getLetterOptions(plateString, position)
+                plateLetter -= 1
+                misReadOptions = []
+                while plateString[plateLetter] != '[' or plateString[plateLetter] != ']':
+                    misReadOptions.append(plateString[plateLetter])
+                    
+                
+
     print(possiblePlates)
-            
-    #toggles between inside the brackets or out
-    if plateString[position] == '[' or plateString[position] == ']':
-        misRead = not misRead
 
     return
     
     
 
 def main():
-    #funcTest = "NAcomboPoss[1hJ]BE[0O]LL"
-    #count = countPlateCombinations(funcTest)
+    funcTest = "NAC[1hJ]BE[0O]LL"
+    count = countPlateCombinations(funcTest)
     #print(count)
     #cleanReadTest = cleanRead("A", 6)
     #print(cleanReadTest)
     #misReadTest = misRead("BC", 6)
     #print(misReadTest)
     readOnePlate("NAC[1hJ]BE[0O]LL", 6)
-    #print(plateLength("[ffsdfs]NAcomboPoss[1J]BELL[24234]"))
+    #print(plateLength("NAC[1J]BELL[24234]"))
+    #getLetterOptions('NAC[1hJ]BE[0O]LL', 4)
     return
 
 if __name__ == "__main__": main()
